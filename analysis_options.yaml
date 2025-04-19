@@ -1,0 +1,43 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    prefer_const_constructors: false
+    constant_identifier_names: false
+    avoid_dynamic_calls: true
+    avoid_annotating_with_dynamic: true
+    avoid_redundant_argument_values: false
+    combinators_ordering: true
+    avoid_types_as_parameter_names: true
+    prefer_typing_uninitialized_variables: true
+
+analyzer:
+  errors:
+    avoid_print: ignore
+    empty_catches: ignore
+    unreachable_switch_default: ignore
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 100
+    number-of-parameters: 7
+    maximum-nesting-level: 5
+    lines-of-code: 100
+    number-of-methods: 10
+    weight-of-class: 0.33
+  metrics-exclude:
+    - test/**
+  rules:
+    - avoid-passing-async-when-sync-expected
+    - avoid-redundant-async
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
+    - newline-before-return
+    - no-boolean-literal-compare
+    - prefer-trailing-comma
+    - prefer-conditional-expressions
+    - no-equal-then-else
+    - prefer-moving-to-variable
