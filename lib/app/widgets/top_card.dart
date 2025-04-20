@@ -16,8 +16,6 @@ class TopCard extends StatelessWidget with ThemeInjector {
   @override
   Widget build(BuildContext context) {
     Color positiveColor = aliasTokens.color.positive.placeholderColor;
-    Color bgColor02 = aliasTokens.color.elements.bgColor02;
-    Color bgColor03 = aliasTokens.color.elements.bgColor03;
     Color negativeColor = aliasTokens.color.elements.negativeColor;
 
     return Padding(
