@@ -15,6 +15,10 @@ class HomeStore extends StateStore {
   ExpenseDropdownItem? get selectedType => _selectedType.value;
   set selectedType(ExpenseDropdownItem? value) => _selectedType.value = value;
 
+  final types = RxList<ExpenseDropdownItem>();
+  final types1 = RxList<int>();
+  final typesChecked = RxList<int>();
+
   int numberOfTransactions = 0;
   //List<List<dynamic>> currentTransactions = [];
   final _currentTransactions = RxList<List<dynamic>>([]);
@@ -51,4 +55,9 @@ class HomeStore extends StateStore {
   final _dateError = false.obs;
   bool get dateError => _dateError.value;
   set dateError(bool value) => _dateError.value = value;
+
+  final _transactionType = ''.obs;
+  String get transactionType => _transactionType.value;
+  RxString get transactionTypeRx => _transactionType;
+  set transactionType(String value) => _transactionType.value = value;
 }

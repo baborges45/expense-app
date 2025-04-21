@@ -63,10 +63,16 @@ class ApiRepositoryImpl implements ApiRepository {
   }
 
   @override
-  Future<void> insertTransaction(String name, String amount, bool isIncome, String date) async {
+  Future<void> insertTransaction(
+    String name,
+    String amount,
+    bool isIncome,
+    String date,
+    String transactionType,
+  ) async {
     if (_worksheet == null) return;
 
-    final newRow = [name, amount, isIncome ? 'income' : 'expense', date];
+    final newRow = [name, amount, isIncome ? 'income' : 'expense', date, transactionType];
     await _worksheet!.values.appendRow(newRow);
 
     // Atualiza cache manualmente

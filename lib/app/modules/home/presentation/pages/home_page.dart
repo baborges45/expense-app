@@ -75,23 +75,38 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(
-                                    width: 300,
-                                    height: 50,
-                                    child: Obx(
-                                      () => ExpenseSwitch(
-                                        label: controller.store.expenseOrIncome == 'income' ? 'Renda' : 'Despesa',
-                                        value: controller.store.isIncome,
-                                        onChanged: (value) {
-                                          controller.store.isIncome = value;
-                                          controller.store.expenseOrIncome = value ? 'income' : 'expense';
-                                          print('isIncome: ${controller.store.isIncome}');
-                                          print('expenseOrIncome: ${controller.store.expenseOrIncome}');
-                                        },
-                                      ),
+                                  Obx(
+                                    () => ExpenseSwitch(
+                                      label: controller.store.expenseOrIncome == 'income' ? 'Renda' : 'Despesa',
+                                      value: controller.store.isIncome,
+                                      onChanged: (value) {
+                                        controller.store.isIncome = value;
+                                        controller.store.expenseOrIncome = value ? 'income' : 'expense';
+                                        print('isIncome: ${controller.store.isIncome}');
+                                        print('expenseOrIncome: ${controller.store.expenseOrIncome}');
+                                      },
                                     ),
                                   ),
-                                  SizedBox(width: spacing.s1_5x),
+                                ],
+                              ),
+                              SizedBox(height: spacing.s2x),
+                              Wrap(
+                                runSpacing: spacing.s2x,
+                                spacing: spacing.s1x,
+                                children: [
+                                  ...controller.store.types1.map((type) {
+                                    return Obx(
+                                      () => ExpenseChipSelect(
+                                        label: controller.getTypeLabel(type),
+                                        isSelected: controller.store.transactionType == type.toString(),
+                                        onPressed: (value) {
+                                          if (controller.store.transactionType != type.toString()) {
+                                            controller.store.transactionType = type.toString();
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  }),
                                 ],
                               ),
                               SizedBox(height: spacing.s2x),
@@ -151,6 +166,7 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
                                       controller.store.nameError = false;
                                       controller.store.amountError = false;
                                       controller.store.date.clear();
+                                      controller.store.transactionType = '';
                                       Modular.to.pop();
                                     }
                                   },
@@ -183,6 +199,8 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
                           trnsactionName: transaction[0],
                           transactionAmount: transaction[1],
                           expenseOrIncome: transaction[2],
+                          dateTransaction: transaction[3],
+                          transactionType: transaction[4],
                         );
                       }).toList(),
                     ),
@@ -197,6 +215,34 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
       controller.store.amount,
       controller.store.isIncome,
       controller.store.date.first.toString(),
+      controller.store.transactionType,
     );
+  }
+
+  ExpenseHeadingType _mapTransactionType(String type) {
+    switch (type.toLowerCase()) {
+      case 'food':
+        return ExpenseHeadingType.food;
+      case 'transport':
+        return ExpenseHeadingType.transport;
+      case 'shopping':
+        return ExpenseHeadingType.shopping;
+      case 'education':
+        return ExpenseHeadingType.education;
+      case 'work':
+        return ExpenseHeadingType.work;
+      case 'finance':
+        return ExpenseHeadingType.finance;
+      case 'entertainment':
+        return ExpenseHeadingType.entertainment;
+      case 'health':
+        return ExpenseHeadingType.health;
+      case 'home':
+        return ExpenseHeadingType.home;
+      case 'gifts':
+        return ExpenseHeadingType.gifts;
+      default:
+        return ExpenseHeadingType.other;
+    }
   }
 }

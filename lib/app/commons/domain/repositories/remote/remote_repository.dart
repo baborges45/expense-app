@@ -27,5 +27,5 @@ abstract class ApiRepository {
   //Future<int> countRows();
   Future<List<List<dynamic>>> getAllTransactions();
   Worksheet? getWorksheet();
-  Future<void> insertTransaction(String name, String amount, bool isIncome, String date);
+  Future<void> insertTransaction(String name, String amount, bool isIncome, String date, String transactionType);
 }

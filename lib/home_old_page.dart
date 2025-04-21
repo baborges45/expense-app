@@ -130,6 +130,8 @@ class _HomeOldPageState extends State<HomeOldPage> with ThemeInjector {
                           trnsactionName: GoogleSheetsApi.currentTransactions[index][0],
                           transactionAmount: GoogleSheetsApi.currentTransactions[index][1],
                           expenseOrIncome: GoogleSheetsApi.currentTransactions[index][2],
+                          dateTransaction: GoogleSheetsApi.currentTransactions[index][3],
+                          transactionType: GoogleSheetsApi.currentTransactions[index][4],
                         );
                       },
                     ),

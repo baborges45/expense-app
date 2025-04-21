@@ -22,6 +22,8 @@ class HomeController extends PageLifeCycleController {
   void onInit() {
     super.onInit();
     getData();
+    transactionTypeList();
+    transactionTypeList1();
   }
 
   void startLoading() {
@@ -51,7 +53,13 @@ class HomeController extends PageLifeCycleController {
     }
   }
 
-  void onAddTransaction(String name, String amount, bool isIncome, String date) async {
+  void onAddTransaction(
+    String name,
+    String amount,
+    bool isIncome,
+    String date,
+    String transactionType,
+  ) async {
     store.loading();
     try {
       await repository.insertTransaction(
@@ -59,12 +67,115 @@ class HomeController extends PageLifeCycleController {
         amount,
         isIncome,
         convertDateToSave(date),
+        getTypeLabel(int.parse(transactionType)),
       );
       store.completed();
     } catch (e) {
       store.error = e.toString();
       debugPrint(e.toString());
     }
+  }
+
+  void transactionTypeSelected(ExpenseDropdownItem? value) {
+    store.selectedType = value;
+  }
+
+  void transactionTypeList() {
+    store.types.value = [
+      ExpenseDropdownItem(
+        '0',
+        'food',
+      ),
+      ExpenseDropdownItem(
+        '1',
+        'transport',
+      ),
+      ExpenseDropdownItem(
+        '2',
+        'entertainment',
+      ),
+      ExpenseDropdownItem(
+        '3',
+        'education',
+      ),
+      ExpenseDropdownItem(
+        '4',
+        'work',
+      ),
+      ExpenseDropdownItem(
+        '5',
+        'finance',
+      ),
+      ExpenseDropdownItem(
+        '6',
+        'shopping',
+      ),
+      ExpenseDropdownItem(
+        '7',
+        'health',
+      ),
+      ExpenseDropdownItem(
+        '8',
+        'home',
+      ),
+      ExpenseDropdownItem(
+        '9',
+        'gifts',
+      ),
+      ExpenseDropdownItem(
+        '10',
+        'other',
+      ),
+    ];
+  }
+
+  void onDeleteTransaction(int index) async {
+    store.loading();
+    try {
+      await repository.deleteTransaction(index);
+      store.completed();
+    } catch (e) {
+      store.error = e.toString();
+      debugPrint(e.toString());
+    }
+  }
+
+  void transactionTypeList1() {
+    store.types1.value = [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+    ];
+  }
+
+  String getTypeLabel(int typeId) {
+    Map<int, String> typeNames = {
+      0: 'Alimentação',
+      1: 'Transporte',
+      2: 'Entretenimento',
+      3: 'Educação',
+      4: 'Trabalho',
+      5: 'Finanças',
+      6: 'Compras',
+      7: 'Saúde',
+      8: 'Casa',
+      9: 'Presentes',
+      10: 'Salário',
+      11: 'Renda Extra',
+      12: 'Outros',
+    };
+
+    return typeNames[typeId] ?? 'Outros';
   }
 
   //   Future init() async {

@@ -31,10 +31,6 @@ class TopCard extends StatelessWidget with ThemeInjector {
               'Saldo disponível',
               size: ExpenseHeadingSize.xs,
             ),
-            // ExpenseHeading(
-            //   'R\$ $balance',
-            //   size: ExpenseHeadingSize.lg,
-            // ),
             ExpenseCurrency(
               price: double.parse(balance),
               size: ExpenseCurrencySize.lg,
@@ -88,8 +84,8 @@ class TopCard extends StatelessWidget with ThemeInjector {
             ),
             ExpenseCurrency(
               price: double.parse(expense),
-              size: ExpenseCurrencySize.lg,
-              type: ExpenseCurrencyType.currency,
+              size: ExpenseCurrencySize.md,
+              type: ExpenseCurrencyType.outcome,
             ),
           ],
         ),
@@ -130,8 +126,8 @@ class TopCard extends StatelessWidget with ThemeInjector {
             ),
             ExpenseCurrency(
               price: double.parse(income),
-              size: ExpenseCurrencySize.lg,
-              type: ExpenseCurrencyType.currency,
+              size: ExpenseCurrencySize.md,
+              type: ExpenseCurrencyType.income,
             ),
           ],
         ),
