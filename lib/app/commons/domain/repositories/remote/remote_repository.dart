@@ -14,17 +14,11 @@ abstract class ApiRepository {
 
   // Future<UserEntity> updateUserProfile(UserFormEntity form, int userId);
 
-  // // Onboarding
-  // Future<List<TagEntity>> fetchTags();
-
-  // Future<void> updateTagProfile(List<int?> tagIds);
-
   // Google Sheets API
   Future<void> initGoogleSheets();
   Future<void> addTransaction(String name, String amount, bool isIncome);
   Future<void> deleteTransaction(int index);
-  Future<void> updateTransaction(int index, String name, String amount, bool isIncome);
-  //Future<int> countRows();
+  Future<void> updateTransaction(int index, String name, String amount, bool isIncome, String date, String transactionType);
   Future<List<List<dynamic>>> getAllTransactions();
   Worksheet? getWorksheet();
   Future<void> insertTransaction(String name, String amount, bool isIncome, String date, String transactionType);

@@ -15,7 +15,7 @@ class ApiRepositoryImpl implements ApiRepository {
   static final credentials = dotenv.env['GOOGLE_CREDENTIALS'] != null
       ? jsonDecode(dotenv.env['GOOGLE_CREDENTIALS']!)
       : throw Exception('GOOGLE_CREDENTIALS não encontrado no arquivo .env');
-  static final _spreadsheetId = '11r8qp8oJBKZZkxH_YJOQSYD3YRiKAWsfd69V3WQPg5M';
+  static final _spreadsheetId = dotenv.env['SPREADSHEET_ID'] ?? (throw Exception('SPREADSHEET_ID não encontrado no arquivo .env'));
   static final _gsheets = GSheets(credentials);
   static Worksheet? _worksheet;
 
@@ -75,26 +75,57 @@ class ApiRepositoryImpl implements ApiRepository {
     final newRow = [name, amount, isIncome ? 'income' : 'expense', date, transactionType];
     await _worksheet!.values.appendRow(newRow);
 
-    // Atualiza cache manualmente
     currentTransactions.add(newRow);
     numberOfTransactions++;
+    await getAllTransactions();
   }
 
   @override
   Future<void> deleteTransaction(int index) async {
-    await datasource.googleSheets(
-      action: 'delete',
-      url: 'https://sheets.googleapis.com/v4/spreadsheets',
-      data: {
-        'spreadsheetId': _spreadsheetId,
-        'index': index,
-      },
-    );
+    if (_worksheet == null) return;
+
+    if (index < 0 || index >= currentTransactions.length) {
+      throw Exception('Índice inválido para deletar transação.');
+    }
+
+    final success = await _worksheet!.deleteRow(index + 2);
+    if (!success) {
+      throw Exception('Falha ao deletar a linha na planilha.');
+    }
+
+    currentTransactions.removeAt(index);
+    numberOfTransactions--;
+
+    await getAllTransactions();
   }
 
   @override
-  Future<void> updateTransaction(int index, String name, String amount, bool isIncome) {
-    // TODO: implement updateTransaction
-    throw UnimplementedError();
+  Future<void> updateTransaction(
+    int index,
+    String name,
+    String amount,
+    bool isIncome,
+    String date,
+    String transactionType,
+  ) async {
+    if (_worksheet == null) return;
+
+    currentTransactions[index] = [
+      name,
+      amount,
+      isIncome ? 'income' : 'expense',
+      date,
+      transactionType,
+    ].cast<String>();
+
+    final row = index + 2;
+
+    await _worksheet!.values.insertValue(name, column: 1, row: row);
+    await _worksheet!.values.insertValue(amount, column: 2, row: row);
+    await _worksheet!.values.insertValue(isIncome ? 'income' : 'expense', column: 3, row: row);
+    await _worksheet!.values.insertValue(date, column: 4, row: row);
+    await _worksheet!.values.insertValue(transactionType, column: 5, row: row);
+
+    await getAllTransactions();
   }
 }

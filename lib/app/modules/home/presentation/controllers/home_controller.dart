@@ -16,14 +16,11 @@ class HomeController extends PageLifeCycleController {
     required this.repository,
   });
 
-  Worksheet? _worksheet;
-
   @override
   void onInit() {
     super.onInit();
     getData();
     transactionTypeList();
-    transactionTypeList1();
   }
 
   void startLoading() {
@@ -40,9 +37,9 @@ class HomeController extends PageLifeCycleController {
     store.loading();
     try {
       await repository.initGoogleSheets();
-      _worksheet = repository.getWorksheet();
 
-      final transactions = await repository.getAllTransactions();
+      final transactions = (await repository.getAllTransactions()).map<List<String>>((transaction) => transaction.cast<String>()).toList();
+
       store.currentTransactions = transactions;
       store.numberOfTransactions = transactions.length;
 
@@ -69,7 +66,7 @@ class HomeController extends PageLifeCycleController {
         convertDateToSave(date),
         getTypeLabel(int.parse(transactionType)),
       );
-      store.completed();
+      getData();
     } catch (e) {
       store.error = e.toString();
       debugPrint(e.toString());
@@ -80,68 +77,44 @@ class HomeController extends PageLifeCycleController {
     store.selectedType = value;
   }
 
-  void transactionTypeList() {
-    store.types.value = [
-      ExpenseDropdownItem(
-        '0',
-        'food',
-      ),
-      ExpenseDropdownItem(
-        '1',
-        'transport',
-      ),
-      ExpenseDropdownItem(
-        '2',
-        'entertainment',
-      ),
-      ExpenseDropdownItem(
-        '3',
-        'education',
-      ),
-      ExpenseDropdownItem(
-        '4',
-        'work',
-      ),
-      ExpenseDropdownItem(
-        '5',
-        'finance',
-      ),
-      ExpenseDropdownItem(
-        '6',
-        'shopping',
-      ),
-      ExpenseDropdownItem(
-        '7',
-        'health',
-      ),
-      ExpenseDropdownItem(
-        '8',
-        'home',
-      ),
-      ExpenseDropdownItem(
-        '9',
-        'gifts',
-      ),
-      ExpenseDropdownItem(
-        '10',
-        'other',
-      ),
-    ];
-  }
-
   void onDeleteTransaction(int index) async {
     store.loading();
     try {
       await repository.deleteTransaction(index);
-      store.completed();
+      getData();
     } catch (e) {
       store.error = e.toString();
       debugPrint(e.toString());
     }
   }
 
-  void transactionTypeList1() {
-    store.types1.value = [
+  void onUpdateTransaction(
+    int index,
+    String name,
+    String amount,
+    bool isIncome,
+    String date,
+    String transactionType,
+  ) async {
+    store.loading();
+    try {
+      await repository.updateTransaction(
+        index,
+        name,
+        amount,
+        isIncome,
+        convertDateToSave(date),
+        transactionType,
+      );
+      getData();
+    } catch (e) {
+      store.error = e.toString();
+      debugPrint(e.toString());
+    }
+  }
+
+  void transactionTypeList() {
+    store.typesList.value = [
       0,
       1,
       2,
@@ -178,40 +151,24 @@ class HomeController extends PageLifeCycleController {
     return typeNames[typeId] ?? 'Outros';
   }
 
-  //   Future init() async {
-  //   final ss = await _gsheets.spreadsheet(_spreadsheetId);
-  //   _worksheet = ss.worksheetByTitle('Sheet1');
-  //   conutRows();
-  // }
+  int getIntLabel(String type) {
+    Map<String, int> typeNames = {
+      'Alimentação': 0,
+      'Transporte': 1,
+      'Entretenimento ': 2,
+      'Educação': 3,
+      'Trabalho': 4,
+      'Finanças': 5,
+      'Compras': 6,
+      'Saúde': 7,
+      'Casa': 8,
+      'Presentes': 9,
+      'Salário': 10,
+      'Renda Extra': 11,
+      'Outros': 12,
+    };
 
-  // static Future conutRows() async {
-  //   while ((await _worksheet!.values.value(column: 1, row: numberOfTransactions + 1)) != '') {
-  //     numberOfTransactions++;
-  //   }
-  //   loadTransactions();
-  // }
-
-  // static Future<void> addTransaction(String name, String amount, String type) async {
-  //   await _worksheet!.values.appendRow([name, amount, type]);
-  //   numberOfTransactions++;
-  // }
-
-  Future<Worksheet?> loadTransactions() async {
-    if (_worksheet == null) {
-      return null;
-    }
-
-    for (int i = 1; i < store.numberOfTransactions; i++) {
-      final transactionName = await _worksheet!.values.value(column: 1, row: i + 1);
-      final transactionAmount = await _worksheet!.values.value(column: 2, row: i + 1);
-      final transactionType = await _worksheet!.values.value(column: 3, row: i + 1);
-
-      if (store.currentTransactions.length < store.numberOfTransactions) {
-        store.currentTransactions.add([transactionName, transactionAmount, transactionType]);
-      }
-    }
-    print('currentTransactions: ${store.currentTransactions}');
-    return null;
+    return typeNames[type] ?? 0;
   }
 
   double calculateBalance() {
@@ -246,80 +203,117 @@ class HomeController extends PageLifeCycleController {
     return calculateIncome() - calculateExpense();
   }
 
-  // Future insertTransaction(String name, String amount, bool isIncome) async {
-  //   if (_worksheet == null) {
-  //     return;
-  //   }
+  void clearEditing() {
+    store.isEditing.value = false;
+    store.editingIndex = null;
+    store.nameController.clear();
+    store.amountController.clear();
+    store.dateController.clear();
+    store.transactionTypeController.clear();
+  }
 
-  //   store.numberOfTransactions++;
-  //   store.currentTransactions.add([name, amount, isIncome ? 'income' : 'expense']);
-  //   await _worksheet!.values.appendRow([name, amount, isIncome ? 'income' : 'expense']);
-  // }
+  void clearFields() {
+    store.nameController.clear();
+    store.amountController.clear();
+    store.dateController.clear();
+    store.transactionTypeController.clear();
+    store.name = '';
+    store.amount = '';
+    store.nameError = false;
+    store.amountError = false;
+    store.date.clear();
+    store.transactionType = '';
+  }
 
-  // static Future deleteTransaction(int index) async {
-  //   if (_worksheet == null) {
-  //     return;
-  //   }
+  void prepareForm({bool editMode = false, int? index}) {
+    store.isEditing.value = editMode;
+    store.editingIndex = index?.obs;
 
-  //   numberOfTransactions--;
-  //   currentTransactions.removeAt(index);
-  //   await _worksheet!.values.appendRow([index + 1]);
-  // }
+    if (editMode && index != null) {
+      final transaction = store.currentTransactions[index];
+      store.nameController.text = transaction[0];
+      store.amountController.text = transaction[1];
+      store.dateController.text = transaction[3];
+      store.transactionTypeController.text = transaction[4];
+      store.name = transaction[0];
+      store.amount = transaction[1];
+      store.isIncome = transaction[2] == 'income';
+      store.expenseOrIncome = transaction[2];
+      try {
+        final parsedDate = DateFormat('dd/MM/yyyy').parse(transaction[3]);
+        store.date.assign(parsedDate);
+      } catch (e) {
+        debugPrint('Erro ao converter a data: $e');
+      }
+      store.transactionType = transaction[4];
+    } else {
+      clearFields();
+    }
+  }
 
-  // static Future updateTransaction(int index, String name, String amount, bool isIncome) async {
-  //   if (_worksheet == null) {
-  //     return;
-  //   }
+  String? validateFields() {
+    bool hasError = false;
 
-  //   currentTransactions[index] = [name, amount, isIncome ? 'income' : 'expense'];
-  //   await _worksheet!.values.insertValue(name, column: 1, row: index + 1);
-  //   await _worksheet!.values.insertValue(amount, column: 2, row: index + 1);
-  //   await _worksheet!.values.insertValue(isIncome ? 'income' : 'expense', column: 3, row: index + 1);
-  // }
+    if (store.nameController.text.isEmpty) {
+      store.nameError = true;
+      hasError = true;
+    } else {
+      store.nameError = false;
+    }
 
-  // static Future<void> deleteAllTransactions() async {
-  //   if (_worksheet == null) {
-  //     return;
-  //   }
+    if (store.amountController.text.isEmpty) {
+      store.amountError = true;
+      hasError = true;
+    } else {
+      store.amountError = false;
+    }
 
-  //   for (int i = 0; i < numberOfTransactions; i++) {
-  //     await _worksheet!.values.insertValue('', column: 1, row: i + 1);
-  //     await _worksheet!.values.insertValue('', column: 2, row: i + 1);
-  //     await _worksheet!.values.insertValue('', column: 3, row: i + 1);
-  //   }
-  //   numberOfTransactions = 0;
-  //   currentTransactions = [];
-  // }
+    if (store.date.isEmpty) {
+      store.dateError = true;
+      hasError = true;
+    } else {
+      store.dateError = false;
+    }
 
-  // static double calculateBalance() {
-  //   double balance = 0;
-  //   for (int i = 0; i < currentTransactions.length; i++) {
-  //     balance += double.parse(currentTransactions[i][1]);
-  //   }
-  //   return balance;
-  // }
+    if (store.transactionType.isEmpty) {
+      store.transactionTypeError = true;
+      hasError = true;
+    } else {
+      store.transactionTypeError = false;
+    }
 
-  // static double calculateIncome() {
-  //   double income = 0;
-  //   for (int i = 0; i < currentTransactions.length; i++) {
-  //     if (currentTransactions[i][2] == 'income') {
-  //       income += double.parse(currentTransactions[i][1]);
-  //     }
-  //   }
-  //   return income;
-  // }
+    return hasError ? 'Por favor, preencha todos os campos obrigatórios' : null;
+  }
 
-  // static double calculateExpense() {
-  //   double expense = 0;
-  //   for (int i = 0; i < currentTransactions.length; i++) {
-  //     if (currentTransactions[i][2] == 'expense') {
-  //       expense += double.parse(currentTransactions[i][1]);
-  //     }
-  //   }
-  //   return expense;
-  // }
+  void addTransaction() {
+    store.name = store.nameController.text;
+    store.amount = store.amountController.text;
+    onAddTransaction(
+      store.name,
+      store.amount,
+      store.isIncome,
+      store.date.first.toString(),
+      store.transactionType,
+    );
+    clearFields();
+  }
 
-  // static double calculateDifference() {
-  //   return calculateIncome() - calculateExpense();
-  // }
+  void updateTransaction() {
+    store.name = store.nameController.text;
+    store.amount = store.amountController.text;
+    onUpdateTransaction(
+      store.editingIndex!.value,
+      store.name,
+      store.amount,
+      store.isIncome,
+      store.date.first.toString(),
+      store.transactionType,
+    );
+    clearFields();
+  }
+
+  void deleteTransaction(int index) {
+    onDeleteTransaction(store.editingIndex!.value);
+    clearFields();
+  }
 }

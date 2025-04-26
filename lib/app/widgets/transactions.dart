@@ -66,18 +66,12 @@ class Transactions extends StatelessWidget with ThemeInjector {
                     SizedBox(height: spacing.s1x),
                     Expanded(
                       child: ExpenseHeading(
-                        dateTransaction,
+                        formatDate(dateTransaction),
                         size: ExpenseHeadingSize.xxs,
                       ),
                     ),
                   ],
                 ),
-                // style: TextStyle(
-                //   color: expenseOrIncome == 'expense' ? aliasTokens.color.elements.negativeColor : aliasTokens.color.positive.placeholderColor,
-                //   fontSize: globalTokens.typographys.fontSizeSm,
-                //   fontWeight: FontWeight.w500,
-                // ),
-                //),
               ],
             ),
           ),
@@ -116,35 +110,6 @@ class Transactions extends StatelessWidget with ThemeInjector {
         return ExpenseHeadingType.other;
       default:
         return ExpenseHeadingType.other;
-    }
-  }
-
-  String getTransactionType(ExpenseHeadingType type) {
-    switch (type) {
-      case ExpenseHeadingType.food:
-        return 'Alimentação';
-      case ExpenseHeadingType.transport:
-        return 'Transporte';
-      case ExpenseHeadingType.shopping:
-        return 'Compras';
-      case ExpenseHeadingType.education:
-        return 'Educação';
-      case ExpenseHeadingType.work:
-        return 'Trabalho';
-      case ExpenseHeadingType.finance:
-        return 'Finanças';
-      case ExpenseHeadingType.entertainment:
-        return 'Entretenimento';
-      case ExpenseHeadingType.health:
-        return 'Saúde';
-      case ExpenseHeadingType.home:
-        return 'Casa';
-      case ExpenseHeadingType.gifts:
-        return 'Presentes';
-      case ExpenseHeadingType.other:
-        return 'Outros';
-      default:
-        return 'Outros';
     }
   }
 }
