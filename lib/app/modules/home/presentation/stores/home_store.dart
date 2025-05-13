@@ -22,6 +22,7 @@ class HomeStore extends StateStore {
   final typesList = RxList<int>();
 
   int numberOfTransactions = 0;
+
   final _currentTransactions = RxList<List<dynamic>>([]);
   List<List<dynamic>> get currentTransactions => _currentTransactions;
   RxList<List<dynamic>> get currentTransactionsRx => _currentTransactions;

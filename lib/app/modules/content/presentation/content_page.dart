@@ -11,7 +11,7 @@ class ContentPage extends StatefulWidget {
 class _ContentPageState extends State<ContentPage> with ThemeInjector {
   final List<String> _tabRoutes = [
     Routes.home,
-    Routes.community,
+    Routes.chart,
     Routes.profile,
   ];
   int _currentIndex = 0;
@@ -50,7 +50,7 @@ class _ContentPageState extends State<ContentPage> with ThemeInjector {
           ),
           ExpenseBottomBarFloatItem(
             label: 'Histórico',
-            icon: ExpenseIcons.community,
+            icon: ExpenseIcons.statistic,
           ),
           ExpenseBottomBarFloatItem(
             label: 'Profile',

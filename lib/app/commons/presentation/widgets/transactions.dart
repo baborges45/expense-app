@@ -6,6 +6,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
   final String expenseOrIncome;
   final String dateTransaction;
   final String transactionType;
+  final bool isStatusColor;
 
   const Transactions({
     required this.trnsactionName,
@@ -13,6 +14,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
     required this.expenseOrIncome,
     required this.dateTransaction,
     required this.transactionType,
+    this.isStatusColor = false,
     super.key,
   });
 
@@ -26,7 +28,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
           Container(
             padding: EdgeInsets.all(sizing.s2x),
             decoration: BoxDecoration(
-              color: aliasTokens.color.elements.bgColor01,
+              color: aliasTokens.color.elements.bgColor02,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: aliasTokens.color.elements.bgColor03,

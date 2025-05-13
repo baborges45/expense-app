@@ -27,6 +27,9 @@ dependencies:
   get_storage: ^2.1.1
   lottie: ^3.3.1
   intl: ^0.20.2
+  json_annotation: ^4.9.0
+  json_serializable:
+  fl_chart: ^0.71.0
 
 
 dev_dependencies:
@@ -34,7 +37,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   isar_generator: ^3.1.0+1
-  build_runner: ^2.4.13
+  build_runner: 
 
 
 flutter:

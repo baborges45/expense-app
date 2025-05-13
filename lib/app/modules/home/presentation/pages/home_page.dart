@@ -1,7 +1,6 @@
 import 'package:expense_app/app/commons/commons.dart';
 import 'package:expense_app/app/modules/home/presentation/widgets/home_loading.dart' show HomeLoading;
 import 'package:expense_app/app/widgets/top_card.dart';
-import 'package:expense_app/app/widgets/transactions.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/home_controller.dart';
@@ -39,64 +38,54 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
     });
   }
 
-  Widget _buildState(BuildContext context) => Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: aliasTokens.color.elements.bgColor02,
-            ),
-            height: sizing.s35x,
-            child: TopCard(
+  Widget _buildState(BuildContext context) => SingleChildScrollView(
+        child: Column(
+          children: [
+            TopCard(
               balance: controller.calculateDifference().toString(),
               expense: controller.calculateExpense().toString(),
               income: controller.calculateIncome().toString(),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Center(
-                child: ExpenseHeading(
-                  'Transactions',
-                  size: ExpenseHeadingSize.md,
-                ),
-              ),
-              ExpenseButton(
-                label: 'Adicionar transação',
-                icon: ExpenseIcons.plusLine,
-                onPressed: () => openTransactionForm(),
-                size: ExpenseButtonSize.sm,
-              )
-            ],
-          ).paddingSymmetric(horizontal: sizing.s2x, vertical: sizing.s2_5x),
-          controller.store.currentTransactions.isEmpty
-              ? ExpenseHeading(
-                  'Nenhuma transação encontrada',
-                  size: ExpenseHeadingSize.sm,
-                  textAlign: TextAlign.center,
-                ).paddingOnly(top: sizing.s15x)
-              : Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: controller.store.currentTransactions.map((transaction) {
-                        int index = controller.store.currentTransactions.indexOf(transaction);
-                        return GestureDetector(
-                          onTap: () => openTransactionForm(editMode: true, index: index),
-                          child: Transactions(
-                            trnsactionName: transaction[0],
-                            transactionAmount: transaction[1],
-                            expenseOrIncome: transaction[2],
-                            dateTransaction: transaction[3],
-                            transactionType: transaction[4],
-                          ),
-                        );
-                      }).toList(),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Center(
+                  child: ExpenseHeading(
+                    'Transactions',
+                    size: ExpenseHeadingSize.md,
                   ),
                 ),
-        ],
-      ).paddingOnly(bottom: sizing.s12x);
+                ExpenseButton(
+                  label: 'Adicionar transação',
+                  icon: ExpenseIcons.plusLine,
+                  onPressed: () => openTransactionForm(),
+                  size: ExpenseButtonSize.sm,
+                )
+              ],
+            ).paddingSymmetric(horizontal: sizing.s2x, vertical: sizing.s2_5x),
+            controller.store.currentTransactions.isEmpty
+                ? ExpenseHeading(
+                    'Nenhuma transação encontrada',
+                    size: ExpenseHeadingSize.sm,
+                    textAlign: TextAlign.center,
+                  ).paddingOnly(top: sizing.s15x)
+                : Column(
+                    children: controller.store.currentTransactions.map((transaction) {
+                      return GestureDetector(
+                        onTap: () => openTransactionForm(editMode: true, index: controller.store.currentTransactions.indexOf(transaction)),
+                        child: Transactions(
+                          trnsactionName: transaction[0],
+                          transactionAmount: transaction[1],
+                          expenseOrIncome: transaction[2],
+                          dateTransaction: transaction[3],
+                          transactionType: transaction[4],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+          ],
+        ).paddingOnly(bottom: sizing.s12x),
+      );
 
   void openTransactionForm({bool editMode = false, int? index}) {
     controller.prepareForm(editMode: editMode, index: index);
@@ -146,7 +135,6 @@ class _HomePageState extends ModularInjector<HomePage, HomeController> with Them
                   ),
                 ],
               ),
-              // No TransactionForm
               SizedBox(height: spacing.s3x),
               Obx(
                 () => controller.store.typesList.isEmpty

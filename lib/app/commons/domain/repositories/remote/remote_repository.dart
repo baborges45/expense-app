@@ -1,4 +1,5 @@
 import 'package:expense_app/app/commons/commons.dart';
+import 'package:expense_app/app/commons/domain/entities/transaction_entity.dart';
 
 abstract class ApiRepository {
   // Auth
@@ -19,7 +20,7 @@ abstract class ApiRepository {
   Future<void> addTransaction(String name, String amount, bool isIncome);
   Future<void> deleteTransaction(int index);
   Future<void> updateTransaction(int index, String name, String amount, bool isIncome, String date, String transactionType);
-  Future<List<List<dynamic>>> getAllTransactions();
+  Future<List<TransactionEntity>> getAllTransactions();
   Worksheet? getWorksheet();
   Future<void> insertTransaction(String name, String amount, bool isIncome, String date, String transactionType);
 }
