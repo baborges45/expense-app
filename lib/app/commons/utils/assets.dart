@@ -7,7 +7,7 @@ class Assets {
   // Animations
   static const String splashscreen = 'assets/animations/splashscreen.json';
   static const String welcomeLoading = 'assets/animations/welcome_loading.json';
-  static const String onboardingTextOne = 'assets/animations/text_onboarding_01.json';
+  static const String onboardingTextOne = 'assets/animations/personagem_inicio_onboarding.json';
   static const String onboardingTextTwo = 'assets/animations/text_onboarding_02.json';
   static const String onboardingPulseButton = 'assets/animations/pulse_button.json';
 

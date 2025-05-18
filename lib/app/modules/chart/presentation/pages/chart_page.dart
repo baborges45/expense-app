@@ -13,7 +13,7 @@ class ChartPage extends StatefulWidget with ThemeInjector {
   State<ChartPage> createState() => _ChartPageState();
 }
 
-class _ChartPageState extends ModularInjector<ChartPage, ChartController> with ThemeInjector {
+class _ChartPageState extends ModularInjector<ChartPage, ChartController> with ThemeInjector, TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.sizeOf(context);

@@ -1,9 +1,14 @@
 import 'package:expense_app/app/commons/commons.dart';
 import 'package:flutter/material.dart';
 
-class ProfileUpSell extends StatelessWidget with ThemeInjector {
+class ProfileUpSell extends StatefulWidget {
   const ProfileUpSell({super.key});
 
+  @override
+  State<ProfileUpSell> createState() => _ProfileUpSellState();
+}
+
+class _ProfileUpSellState extends State<ProfileUpSell> with ThemeInjector, TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

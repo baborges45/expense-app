@@ -15,12 +15,12 @@ class ChartTypeLegend extends StatelessWidget with ThemeInjector {
     return Row(
       children: [
         Container(
-          width: 15,
-          height: 15,
+          width: sizing.s2x,
+          height: sizing.s2x,
           decoration: ShapeDecoration(
             color: aliasTokens.color.elements.bgColor01,
             shape: CircleBorder(
-              side: BorderSide(width: 4, color: color),
+              side: BorderSide(width: sizing.half, color: color),
             ),
           ),
         ),

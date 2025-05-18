@@ -16,7 +16,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => expenseTheme),
-        ChangeNotifierProvider(create: (context) => ExpenseDatabase()),
+        //ChangeNotifierProvider(create: (context) => ExpenseDatabase()),
       ],
       child: ModularApp(
         module: AppModule(),
@@ -29,5 +29,5 @@ void main() async {
 _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  await ExpenseDatabase.initialize();
+  //await ExpenseDatabase.initialize();
 }

@@ -48,7 +48,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
               children: [
                 ExpenseHeading(
                   trnsactionName,
-                  size: ExpenseHeadingSize.sm,
+                  size: ExpenseHeadingSize.xs,
                   type: _mapTransactionType(transactionType),
                 ),
                 Column(

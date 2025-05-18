@@ -27,12 +27,12 @@ class HomeLoading extends StatelessWidget with ThemeInjector {
                 children: [
                   ExpenseSkeleton(
                     height: sizing.s4x,
-                    width: 147,
+                    width: sizing.s20x,
                   ),
                   const Spacer(),
                   ExpenseSkeleton(
-                    height: sizing.s6x,
-                    width: sizing.s25x,
+                    height: sizing.s4x,
+                    width: sizing.s20x,
                     borderRadius: BorderRadius.circular(
                       globalTokens.shapes.border.radiusCircular,
                     ),
