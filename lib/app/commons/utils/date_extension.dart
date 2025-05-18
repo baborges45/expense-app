@@ -20,3 +20,18 @@ String convertDateToSave(String initialDate) {
     return '';
   }
 }
+
+String formatDate(String date) {
+  try {
+    final parsedDate = double.tryParse(date);
+    if (parsedDate != null) {
+      final dateTime = DateTime(1899, 12, 30).add(Duration(days: parsedDate.toInt()));
+      return DateFormat('dd/MM/yyyy').format(dateTime);
+    }
+
+    final dateTime = DateFormat('dd/MM/yyyy').parse(date);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
+  } catch (e) {
+    return date;
+  }
+}

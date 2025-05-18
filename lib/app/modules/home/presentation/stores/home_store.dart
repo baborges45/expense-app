@@ -3,6 +3,9 @@ import 'package:expense_app/app/commons/commons.dart';
 class HomeStore extends StateStore {
   RxBool timeHasStarted = false.obs;
 
+  RxBool isEditing = false.obs;
+  RxInt? editingIndex;
+
   final _isIncome = false.obs;
   bool get isIncome => _isIncome.value;
   set isIncome(bool value) => _isIncome.value = value;
@@ -15,13 +18,26 @@ class HomeStore extends StateStore {
   ExpenseDropdownItem? get selectedType => _selectedType.value;
   set selectedType(ExpenseDropdownItem? value) => _selectedType.value = value;
 
+  final types = RxList<ExpenseDropdownItem>();
+  final typesList = RxList<int>();
+
   int numberOfTransactions = 0;
-  //List<List<dynamic>> currentTransactions = [];
+
   final _currentTransactions = RxList<List<dynamic>>([]);
   List<List<dynamic>> get currentTransactions => _currentTransactions;
   RxList<List<dynamic>> get currentTransactionsRx => _currentTransactions;
   set currentTransactions(List<List<dynamic>> value) => _currentTransactions.value = value;
   bool isLoaded = true;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController transactionTypeController = TextEditingController();
+
+  final TextEditingController createNameController = TextEditingController();
+  final TextEditingController createAmountController = TextEditingController();
+  final TextEditingController editNameController = TextEditingController();
+  final TextEditingController editAmountController = TextEditingController();
 
   final _amount = ''.obs;
   String get amount => _amount.value;
@@ -51,4 +67,13 @@ class HomeStore extends StateStore {
   final _dateError = false.obs;
   bool get dateError => _dateError.value;
   set dateError(bool value) => _dateError.value = value;
+
+  final _transactionType = ''.obs;
+  String get transactionType => _transactionType.value;
+  RxString get transactionTypeRx => _transactionType;
+  set transactionType(String value) => _transactionType.value = value;
+
+  final _transactionTypeError = false.obs;
+  bool get transactionTypeError => _transactionTypeError.value;
+  set transactionTypeError(bool value) => _transactionTypeError.value = value;
 }

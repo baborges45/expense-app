@@ -15,6 +15,7 @@ export 'data/infra/dio_datasource.dart';
 export 'domain/repositories/local/local_repository.dart';
 export 'domain/repositories/remote/remote_repository.dart';
 export 'domain/enums/enums.dart';
+export 'presentation/widgets/transactions.dart';
 
 //presentation
 export 'presentation/controllers/page_life_cycle_controller.dart';
