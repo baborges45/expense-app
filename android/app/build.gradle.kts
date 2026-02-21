@@ -24,7 +24,9 @@ android {
         applicationId = "br.com.expense_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // minSdkVersion required by some dependencies (e.g. ML Kit) is 26.
+        // Override the default flutter.minSdkVersion which was 24.
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

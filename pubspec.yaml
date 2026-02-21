@@ -5,7 +5,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.1.4 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -29,6 +29,7 @@ dependencies:
   json_serializable:
   fl_chart: ^0.71.0
   animate_do: ^4.2.0
+  google_mlkit_entity_extraction: ^0.15.3
 
 
 dev_dependencies:

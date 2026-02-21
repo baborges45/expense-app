@@ -1,5 +1,4 @@
 import 'package:expense_app/app/commons/commons.dart';
-import 'package:expense_app/app/database/expense_database.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app_module.dart';

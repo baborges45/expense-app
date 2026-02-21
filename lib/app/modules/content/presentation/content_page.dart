@@ -9,11 +9,7 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> with ThemeInjector {
-  final List<String> _tabRoutes = [
-    Routes.home,
-    Routes.chart,
-    Routes.profile,
-  ];
+  final List<String> _tabRoutes = [Routes.home, Routes.chart, Routes.profile];
   int _currentIndex = 0;
 
   @override
@@ -39,15 +35,12 @@ class _ContentPageState extends State<ContentPage> with ThemeInjector {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: aliasTokens.color.elements.bgColor01,
+      backgroundColor: Color(0xC51A1B1E),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ExpenseBottomBarFloat(
         width: sizing.s35x,
         items: [
-          ExpenseBottomBarFloatItem(
-            label: 'Home',
-            icon: ExpenseIcons.homeLine,
-          ),
+          ExpenseBottomBarFloatItem(label: 'Home', icon: ExpenseIcons.homeLine),
           ExpenseBottomBarFloatItem(
             label: 'Histórico',
             icon: ExpenseIcons.statistic,

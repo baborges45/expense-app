@@ -124,19 +124,7 @@ class HomeController extends PageLifeCycleController {
   }
 
   void transactionTypeList() {
-    store.typesList.value = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-    ];
+    store.typesList.value = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   }
 
   String getTypeLabel(int typeId) {
@@ -178,7 +166,7 @@ class HomeController extends PageLifeCycleController {
   double calculateBalance() {
     double balance = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      balance += double.parse(store.currentTransactions[i][1]);
+      balance += double.parse(store.currentTransactions[i][1] as String);
     }
     return balance;
   }
@@ -186,8 +174,12 @@ class HomeController extends PageLifeCycleController {
   double calculateIncome() {
     double income = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      if (store.currentTransactions[i][2] == 'income') {
-        income += double.parse(store.currentTransactions[i][1]);
+      if ((store.currentTransactions[i][2] as String) == 'income') {
+        income += double.parse(
+          (store.currentTransactions[i][1] as String)
+              .replaceAll('.', '')
+              .replaceAll(',', '.'),
+        );
       }
     }
     return income;
@@ -196,8 +188,8 @@ class HomeController extends PageLifeCycleController {
   double calculateExpense() {
     double expense = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      if (store.currentTransactions[i][2] == 'expense') {
-        expense += double.parse(store.currentTransactions[i][1]);
+      if ((store.currentTransactions[i][2] as String) == 'expense') {
+        expense += double.parse(store.currentTransactions[i][1] as String);
       }
     }
     return expense;
