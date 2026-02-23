@@ -1,5 +1,4 @@
 import 'package:expense_app/app/commons/commons.dart';
-import 'package:expense_app/app/database/expense_database.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app_module.dart';
@@ -16,7 +15,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => expenseTheme),
-        ChangeNotifierProvider(create: (context) => ExpenseDatabase()),
+        //ChangeNotifierProvider(create: (context) => ExpenseDatabase()),
       ],
       child: ModularApp(
         module: AppModule(),
@@ -29,5 +28,5 @@ void main() async {
 _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
-  await ExpenseDatabase.initialize();
+  //await ExpenseDatabase.initialize();
 }

@@ -38,9 +38,19 @@ class HomeController extends PageLifeCycleController {
     try {
       await repository.initGoogleSheets();
 
-      final transactions = (await repository.getAllTransactions()).map<List<String>>((transaction) => transaction.cast<String>()).toList();
+      final transactions = await repository.getAllTransactions();
 
-      store.currentTransactions = transactions;
+      appStore.transactions = transactions;
+      store.currentTransactions = transactions.map((transaction) {
+        final Map<String, dynamic> json = transaction.toJson();
+        return [
+          json['name'] ?? '',
+          json['amount'] ?? '',
+          json['expenseOrIncome'] ?? '',
+          json['date'] ?? '',
+          json['transactionType'] ?? '',
+        ];
+      }).toList();
       store.numberOfTransactions = transactions.length;
 
       store.completed();
@@ -114,21 +124,7 @@ class HomeController extends PageLifeCycleController {
   }
 
   void transactionTypeList() {
-    store.typesList.value = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-    ];
+    store.typesList.value = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   }
 
   String getTypeLabel(int typeId) {
@@ -137,15 +133,13 @@ class HomeController extends PageLifeCycleController {
       1: 'Transporte',
       2: 'Entretenimento',
       3: 'Educação',
-      4: 'Trabalho',
-      5: 'Finanças',
-      6: 'Compras',
-      7: 'Saúde',
-      8: 'Casa',
-      9: 'Presentes',
-      10: 'Salário',
-      11: 'Renda Extra',
-      12: 'Outros',
+      4: 'Finanças',
+      5: 'Compras',
+      6: 'Saúde',
+      7: 'Casa',
+      8: 'Presentes',
+      9: 'Renda Extra',
+      10: 'Outros',
     };
 
     return typeNames[typeId] ?? 'Outros';
@@ -157,15 +151,13 @@ class HomeController extends PageLifeCycleController {
       'Transporte': 1,
       'Entretenimento ': 2,
       'Educação': 3,
-      'Trabalho': 4,
-      'Finanças': 5,
-      'Compras': 6,
-      'Saúde': 7,
-      'Casa': 8,
-      'Presentes': 9,
-      'Salário': 10,
-      'Renda Extra': 11,
-      'Outros': 12,
+      'Finanças': 4,
+      'Compras': 5,
+      'Saúde': 6,
+      'Casa': 7,
+      'Presentes': 8,
+      'Renda Extra': 9,
+      'Outros': 10,
     };
 
     return typeNames[type] ?? 0;
@@ -174,7 +166,7 @@ class HomeController extends PageLifeCycleController {
   double calculateBalance() {
     double balance = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      balance += double.parse(store.currentTransactions[i][1]);
+      balance += double.parse(store.currentTransactions[i][1] as String);
     }
     return balance;
   }
@@ -182,8 +174,12 @@ class HomeController extends PageLifeCycleController {
   double calculateIncome() {
     double income = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      if (store.currentTransactions[i][2] == 'income') {
-        income += double.parse(store.currentTransactions[i][1]);
+      if ((store.currentTransactions[i][2] as String) == 'income') {
+        income += double.parse(
+          (store.currentTransactions[i][1] as String)
+              .replaceAll('.', '')
+              .replaceAll(',', '.'),
+        );
       }
     }
     return income;
@@ -192,8 +188,8 @@ class HomeController extends PageLifeCycleController {
   double calculateExpense() {
     double expense = 0;
     for (int i = 0; i < store.currentTransactions.length; i++) {
-      if (store.currentTransactions[i][2] == 'expense') {
-        expense += double.parse(store.currentTransactions[i][1]);
+      if ((store.currentTransactions[i][2] as String) == 'expense') {
+        expense += double.parse(store.currentTransactions[i][1] as String);
       }
     }
     return expense;

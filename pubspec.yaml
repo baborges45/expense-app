@@ -5,7 +5,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.1.4 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -14,8 +14,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   gsheets: ^0.5.0
   flutter_dotenv: ^5.2.1
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
   analyzer: ^5.13.0
   path_provider: ^2.1.5
   provider: ^6.1.2
@@ -27,14 +25,18 @@ dependencies:
   get_storage: ^2.1.1
   lottie: ^3.3.1
   intl: ^0.20.2
+  json_annotation: ^4.9.0
+  json_serializable:
+  fl_chart: ^0.71.0
+  animate_do: ^4.2.0
+  google_mlkit_entity_extraction: ^0.15.3
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  isar_generator: ^3.1.0+1
-  build_runner: ^2.4.13
+  build_runner: 
 
 
 flutter:

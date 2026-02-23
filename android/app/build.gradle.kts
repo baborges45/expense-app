@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "br.com.expense.expense_app"
+    namespace = "br.com.expense_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,10 +21,12 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "br.com.expense.expense_app"
+        applicationId = "br.com.expense_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // minSdkVersion required by some dependencies (e.g. ML Kit) is 26.
+        // Override the default flutter.minSdkVersion which was 24.
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

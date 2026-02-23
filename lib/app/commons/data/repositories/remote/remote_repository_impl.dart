@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:expense_app/app/commons/commons.dart';
+import 'package:expense_app/app/commons/domain/entities/transaction_entity.dart';
 
 class ApiRepositoryImpl implements ApiRepository {
   final HttpAdapter datasource;
@@ -34,7 +35,7 @@ class ApiRepositoryImpl implements ApiRepository {
   }
 
   @override
-  Future<List<List<dynamic>>> getAllTransactions() async {
+  Future<List<TransactionEntity>> getAllTransactions() async {
     if (_worksheet == null) return [];
 
     final rows = await _worksheet!.values.allRows();
@@ -45,7 +46,18 @@ class ApiRepositoryImpl implements ApiRepository {
     numberOfTransactions = dataRows.length;
     currentTransactions = dataRows;
 
-    return dataRows;
+    final transactionList = dataRows.map((row) {
+      return TransactionEntity(
+        id: dataRows.indexOf(row).toString(),
+        name: row[0].toString(),
+        amount: row[1].toString(),
+        expenseOrIncome: row[2].toString(),
+        date: row[3].toString(),
+        transactionType: row[4].toString(),
+      );
+    }).toList();
+
+    return transactionList;
   }
 
   @override

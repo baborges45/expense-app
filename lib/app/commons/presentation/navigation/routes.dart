@@ -25,7 +25,7 @@ abstract class Routes {
   // Home
   static const home = content + Paths.home;
 
-  // Profile
+// Profile
   static const profile = content + Paths.profile;
   static const profileUpsell = Paths.profileUpsell;
   static const account = Paths.account;
@@ -33,11 +33,7 @@ abstract class Routes {
   static const deleteAccount = Paths.deleteAccount;
 
   // Journey
-  static const journey = Paths.journey;
-  static const player = journey + Paths.player;
-  static const journeyReview = journey + Paths.journeyReview;
-  static const reviews = journey + Paths.reviews;
-  static const videoPlayer = journey + Paths.videoPlayer;
+  static const chart = content + Paths.chart;
 
   // Community
   static const community = content + Paths.community;
@@ -90,15 +86,15 @@ abstract class Paths {
   static const requestData = '/request-data/';
   static const deleteAccount = '/delete-account/';
 
-  // Journey
-  static const journey = '/journey';
+  // chart
+  static const chart = '/chart/';
   static const player = '/player/';
   static const journeyReview = '/review/';
   static const reviews = '/reviews/';
   static const videoPlayer = '/video-player/';
 
   // Community
-  static const community = '/community';
+  static const community = '/community/';
   static const leaders = '/leaders';
   static const experience = '/experience';
   static const communityUpsell = '/communityUpsell/';

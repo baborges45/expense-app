@@ -6,6 +6,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
   final String expenseOrIncome;
   final String dateTransaction;
   final String transactionType;
+  final bool isStatusColor;
 
   const Transactions({
     required this.trnsactionName,
@@ -13,6 +14,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
     required this.expenseOrIncome,
     required this.dateTransaction,
     required this.transactionType,
+    this.isStatusColor = false,
     super.key,
   });
 
@@ -26,7 +28,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
           Container(
             padding: EdgeInsets.all(sizing.s2x),
             decoration: BoxDecoration(
-              color: aliasTokens.color.elements.bgColor01,
+              color: aliasTokens.color.elements.bgColor02,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: aliasTokens.color.elements.bgColor03,
@@ -34,7 +36,9 @@ class Transactions extends StatelessWidget with ThemeInjector {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: aliasTokens.color.elements.bgColor03.withValues(alpha: globalTokens.shapes.opacity.superLow),
+                  color: aliasTokens.color.elements.bgColor03.withValues(
+                    alpha: globalTokens.shapes.opacity.superLow,
+                  ),
                   blurRadius: globalTokens.shapes.border.widthSm,
                   offset: const Offset(0, 2),
                 ),
@@ -46,7 +50,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
               children: [
                 ExpenseHeading(
                   trnsactionName,
-                  size: ExpenseHeadingSize.sm,
+                  size: ExpenseHeadingSize.xs,
                   type: _mapTransactionType(transactionType),
                 ),
                 Column(
@@ -55,11 +59,19 @@ class Transactions extends StatelessWidget with ThemeInjector {
                   children: [
                     Expanded(
                       child: ExpenseCurrency(
-                        price: double.parse(transactionAmount),
+                        price: double.parse(
+                          transactionAmount
+                              .replaceAll('.', '')
+                              .replaceAll(',', '.'),
+                        ),
                         size: ExpenseCurrencySize.sm,
-                        type: expenseOrIncome == 'expense' ? ExpenseCurrencyType.outcome : ExpenseCurrencyType.income,
-                        semanticsLabel: 'Valor do ${expenseOrIncome == 'expense' ? 'despesa' : 'receita'}',
-                        semanticsHint: 'Valor do ${expenseOrIncome == 'expense' ? 'despesa' : 'receita'}',
+                        type: expenseOrIncome == 'expense'
+                            ? ExpenseCurrencyType.outcome
+                            : ExpenseCurrencyType.income,
+                        semanticsLabel:
+                            'Valor do ${expenseOrIncome == 'expense' ? 'despesa' : 'receita'}',
+                        semanticsHint:
+                            'Valor do ${expenseOrIncome == 'expense' ? 'despesa' : 'receita'}',
                         excludeSemantics: true,
                       ),
                     ),
