@@ -23,7 +23,7 @@ class TopCard extends StatelessWidget with ThemeInjector {
         width: MediaQuery.sizeOf(context).width * 0.9,
         height: 200,
         decoration: BoxDecoration(
-          color: Color(0xFF303138),
+          color: aliasTokens.color.elements.bgColor02,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

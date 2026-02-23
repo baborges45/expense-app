@@ -24,7 +24,7 @@ class _HomePageState extends ModularInjector<HomePage, HomeController>
       return SafeArea(
         top: false,
         child: Scaffold(
-          backgroundColor: Color(0xC51A1B1E),
+          backgroundColor: aliasTokens.color.surface.color01,
           body: StateObserver(
             state: controller.store.status,
             onLoading: (_) => const HomeLoading(),

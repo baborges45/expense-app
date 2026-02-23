@@ -28,7 +28,7 @@ class Transactions extends StatelessWidget with ThemeInjector {
           Container(
             padding: EdgeInsets.all(sizing.s2x),
             decoration: BoxDecoration(
-              color: Color(0xFF303138),
+              color: aliasTokens.color.elements.bgColor02,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: aliasTokens.color.elements.bgColor03,
